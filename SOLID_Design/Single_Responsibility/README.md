@@ -5,7 +5,7 @@ Basically a class should only have one purpose. We do not want to make a god cla
 Example:
 
 
-`
+```
 const fs = require('fs');
 
 class Journal
@@ -70,7 +70,7 @@ console.log(j.toString());
 let p =new PersistenceManager();
 let filename = 'c:/temp/journal.txt';
 p.saveToFile(j, filename);
-`
+```
 
 
 Notice here that the journal only focuses on adding and removing entries concerned with the journal. The persistence manager is a completely seperate class that is used to write the journal and work with anything persistence-related. Keeping these classes seperate ensures the single-responsibility principle.
