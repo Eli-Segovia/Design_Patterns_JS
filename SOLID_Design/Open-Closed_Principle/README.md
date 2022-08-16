@@ -78,16 +78,15 @@ Specifications are a type of class that defines a certain type of criteria. In t
 
 For example, in order to filter by color:
 
-```
+```js
 class ColorSpecification {
     constructor(color) {
-        this.color = color
+        this.color = color;
     }
 
     isSatisfied(product) {
         return product.color === this.color;
     }
-
 }
 ```
 
@@ -95,74 +94,60 @@ Notice here we must have the constructor to define the certain criteria, and the
 
 The following is the rest of the code taken from the course:
 
-```
-class ColorSpecification
-{
-  constructor(color)
-  {
-    this.color = color;
-  }
+```js
+class ColorSpecification {
+    constructor(color) {
+        this.color = color;
+    }
 
-  isSatisfied(item)
-  {
-    return item.color === this.color;
-  }
+    isSatisfied(item) {
+        return item.color === this.color;
+    }
 }
 
 class SizeSpecification {
-  constructor(size)
-  {
-    this.size = size;
-  }
+    constructor(size) {
+        this.size = size;
+    }
 
-  isSatisfied(item)
-  {
-    return item.size === this.size;
-  }
+    isSatisfied(item) {
+        return item.size === this.size;
+    }
 }
 
-class BetterFilter
-{
-  filter(items, spec)
-  {
-    return items.filter(x => spec.isSatisfied(x));
-  }
+class BetterFilter {
+    filter(items, spec) {
+        return items.filter((x) => spec.isSatisfied(x));
+    }
 }
 
 // specification combinator
-class AndSpecification
-{
-  constructor(...specs)
-  {
-    this.specs = specs;
-  }
+class AndSpecification {
+    constructor(...specs) {
+        this.specs = specs;
+    }
 
-  isSatisfied(item)
-  {
-    return this.specs.every(x => x.isSatisfied(item));
-  }
+    isSatisfied(item) {
+        return this.specs.every((x) => x.isSatisfied(item));
+    }
 }
 
 let bf = new BetterFilter();
 console.log(`Green products (new):`);
-for (let p of bf.filter(products,
-  new ColorSpecification(Color.green)))
-{
-  console.log(` * ${p.name} is green`);
+for (let p of bf.filter(products, new ColorSpecification(Color.green))) {
+    console.log(` * ${p.name} is green`);
 }
 
 console.log(`Large products:`);
-for (let p of bf.filter(products,
-  new SizeSpecification(Size.large)))
-{
-  console.log(` * ${p.name} is large`);
+for (let p of bf.filter(products, new SizeSpecification(Size.large))) {
+    console.log(` * ${p.name} is large`);
 }
 
 console.log(`Large and green products:`);
 let spec = new AndSpecification(
-  new ColorSpecification(Color.green),
-  new SizeSpecification(Size.large)
+    new ColorSpecification(Color.green),
+    new SizeSpecification(Size.large)
 );
 for (let p of bf.filter(products, spec))
-  console.log(` * ${p.name} is large and green`);
+    console.log(` * ${p.name} is large and green`);
 ```
