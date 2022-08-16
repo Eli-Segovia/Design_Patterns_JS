@@ -14,59 +14,52 @@ Extension usually means inheritance. A class inherits features from another clas
 
 Say we define products as a class:
 
-```
+```js
 // This is a way you can do enums in JavaScript.
 // Basically you create an immutable object with
 // Unchangeable fields
 let Color = Object.freeze({
-  red: 'red',
-  green: 'green',
-  blue: 'blue'
+    red: 'red',
+    green: 'green',
+    blue: 'blue'
 });
 
 let Size = Object.freeze({
-  small: 'small',
-  medium: 'medium',
-  large: 'large',
-  yuge: 'yuge'
+    small: 'small',
+    medium: 'medium',
+    large: 'large',
+    yuge: 'yuge'
 });
 
-class Product
-{
-  constructor(name, color, size)
-  {
-    this.name = name;
-    this.color = color;
-    this.size = size;
-  }
+class Product {
+    constructor(name, color, size) {
+        this.name = name;
+        this.color = color;
+        this.size = size;
+    }
 }
 ```
 
 Here we have a basic definition of what a product is. But let's say we want to filter through these objects... Remember that the Single-Responsibilty principle tells us that a class should only have one responsibility. Therefore, we should create another class:
 
-```
-class ProductFilter
-{
-  filterByColor(products, color)
-  {
-    return products.filter(p => p.color === color);
-  }
+```js
+class ProductFilter {
+    filterByColor(products, color) {
+        return products.filter((p) => p.color === color);
+    }
 
-  filterBySize(products, size)
-  {
-    return products.filter(p => p.size === size);
-  }
+    filterBySize(products, size) {
+        return products.filter((p) => p.size === size);
+    }
 
-  filterBySizeAndColor(products, size, color)
-  {
-    return products.filter(p =>
-      p.size === size && p.color === color);
-  }
+    filterBySizeAndColor(products, size, color) {
+        return products.filter((p) => p.size === size && p.color === color);
+    }
 
-  // state space explosion
-  // 3 criteria (+weight) = 7 methods
+    // state space explosion
+    // 3 criteria (+weight) = 7 methods
 
-  // OCP = open for extension, closed for modification
+    // OCP = open for extension, closed for modification
 }
 ```
 
@@ -78,16 +71,15 @@ Specifications are a type of class that defines a certain type of criteria. In t
 
 For example, in order to filter by color:
 
-```
+```js
 class ColorSpecification {
     constructor(color) {
-        this.color = color
+        this.color = color;
     }
 
     isSatisfied(product) {
         return product.color === this.color;
     }
-
 }
 ```
 
@@ -95,74 +87,60 @@ Notice here we must have the constructor to define the certain criteria, and the
 
 The following is the rest of the code taken from the course:
 
-```
-class ColorSpecification
-{
-  constructor(color)
-  {
-    this.color = color;
-  }
+```js
+class ColorSpecification {
+    constructor(color) {
+        this.color = color;
+    }
 
-  isSatisfied(item)
-  {
-    return item.color === this.color;
-  }
+    isSatisfied(item) {
+        return item.color === this.color;
+    }
 }
 
 class SizeSpecification {
-  constructor(size)
-  {
-    this.size = size;
-  }
+    constructor(size) {
+        this.size = size;
+    }
 
-  isSatisfied(item)
-  {
-    return item.size === this.size;
-  }
+    isSatisfied(item) {
+        return item.size === this.size;
+    }
 }
 
-class BetterFilter
-{
-  filter(items, spec)
-  {
-    return items.filter(x => spec.isSatisfied(x));
-  }
+class BetterFilter {
+    filter(items, spec) {
+        return items.filter((x) => spec.isSatisfied(x));
+    }
 }
 
 // specification combinator
-class AndSpecification
-{
-  constructor(...specs)
-  {
-    this.specs = specs;
-  }
+class AndSpecification {
+    constructor(...specs) {
+        this.specs = specs;
+    }
 
-  isSatisfied(item)
-  {
-    return this.specs.every(x => x.isSatisfied(item));
-  }
+    isSatisfied(item) {
+        return this.specs.every((x) => x.isSatisfied(item));
+    }
 }
 
 let bf = new BetterFilter();
 console.log(`Green products (new):`);
-for (let p of bf.filter(products,
-  new ColorSpecification(Color.green)))
-{
-  console.log(` * ${p.name} is green`);
+for (let p of bf.filter(products, new ColorSpecification(Color.green))) {
+    console.log(` * ${p.name} is green`);
 }
 
 console.log(`Large products:`);
-for (let p of bf.filter(products,
-  new SizeSpecification(Size.large)))
-{
-  console.log(` * ${p.name} is large`);
+for (let p of bf.filter(products, new SizeSpecification(Size.large))) {
+    console.log(` * ${p.name} is large`);
 }
 
 console.log(`Large and green products:`);
 let spec = new AndSpecification(
-  new ColorSpecification(Color.green),
-  new SizeSpecification(Size.large)
+    new ColorSpecification(Color.green),
+    new SizeSpecification(Size.large)
 );
 for (let p of bf.filter(products, spec))
-  console.log(` * ${p.name} is large and green`);
+    console.log(` * ${p.name} is large and green`);
 ```
