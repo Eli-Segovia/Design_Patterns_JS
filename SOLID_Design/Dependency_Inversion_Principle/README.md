@@ -93,3 +93,5 @@ rels.addParentAndChild(parent, child2);
 
 new Research(rels);
 ```
+
+In order to perform the dependency inversion in this case, what we do is we create the `RelationshipBrowser`. This serves as a sort of inerface where the `Relationship` class can implement the methods we need to perform. For example, here we want to filter the children of a certain parent... The interface itself does not care about what type of data structure we are using in the `Relationship` class, but when we implement the method in the `Relationship` class, since we are inside the class, we do care about the data structure used... However, when we use the `RelationshipBrowser` when we perform our high-level task (in this case research), we just use the Browser, and we don't care about the data structure used to hold the data. 
