@@ -43,4 +43,6 @@ class CodeBuilder {
 
 let cb = new CodeBuilder('Person');
 
+cb.addField('name').addField('hairStyle');
+
 console.log(cb.toString());
