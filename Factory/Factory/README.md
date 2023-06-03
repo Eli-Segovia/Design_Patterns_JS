@@ -5,8 +5,7 @@ Remember the Single Responsibility Principle. We don't want a master class that 
 #### It's literally just moving Factory Methods into a Factory class...
 
 ```js
-// Point is a class outside of this scope... Look at Factory_Method for its implementation
-
+// Point is a class outside of this scope... Look at Factory_Method for its implementation... but actually I brought it back in the example down in the other block: :)
 class PointFactory {
     static newCartesianPoint(x, y) {
         return new Point(x, y);
